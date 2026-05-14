@@ -1,0 +1,265 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 260 20% 98%;
+    --foreground: 260 30% 12%;
+
+    --card: 260 18% 95%;
+    --card-foreground: 260 30% 12%;
+
+    --popover: 260 20% 98%;
+    --popover-foreground: 260 30% 12%;
+
+    --primary: 270 60% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 174 55% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 260 15% 91%;
+    --muted-foreground: 260 10% 45%;
+
+    --accent: 45 85% 60%;
+    --accent-foreground: 260 30% 12%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 260 12% 85%;
+    --input: 260 12% 85%;
+    --ring: 270 60% 58%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 260 18% 95%;
+    --sidebar-foreground: 260 30% 12%;
+    --sidebar-primary: 270 60% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 260 15% 91%;
+    --sidebar-accent-foreground: 260 30% 12%;
+    --sidebar-border: 260 12% 85%;
+    --sidebar-ring: 270 60% 58%;
+
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
+  }
+
+  .dark {
+    --background: 260 25% 8%;
+    --foreground: 260 15% 92%;
+    --card: 260 22% 12%;
+    --card-foreground: 260 15% 92%;
+    --popover: 260 25% 8%;
+    --popover-foreground: 260 15% 92%;
+    --primary: 270 55% 62%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 174 45% 45%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 260 18% 18%;
+    --muted-foreground: 260 10% 58%;
+    --accent: 45 75% 55%;
+    --accent-foreground: 260 25% 8%;
+    --destructive: 0 62% 35%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 260 15% 22%;
+    --input: 260 15% 22%;
+    --ring: 270 55% 62%;
+    --sidebar-background: 260 22% 10%;
+    --sidebar-foreground: 260 15% 92%;
+    --sidebar-primary: 270 55% 62%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 260 18% 18%;
+    --sidebar-accent-foreground: 260 15% 92%;
+    --sidebar-border: 260 15% 22%;
+    --sidebar-ring: 270 55% 62%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+
+  /* Accessibility: consistent visible focus ring across the app.
+     Mouse users won't see it (focus-visible), keyboard users always will. */
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  /* Avoid double rings on shadcn components that already render a ring */
+  [data-radix-collection-item]:focus-visible,
+  [role="menuitem"]:focus-visible,
+  [role="option"]:focus-visible {
+    outline-offset: -2px;
+  }
+}
+
+@layer components {
+  .editorial-container {
+    @apply max-w-6xl mx-auto px-6;
+  }
+
+  .editorial-heading {
+    font-family: var(--font-display);
+    @apply text-4xl md:text-5xl font-bold tracking-tight;
+  }
+
+  .editorial-subheading {
+    font-family: var(--font-display);
+    @apply text-2xl md:text-3xl font-semibold;
+  }
+
+  .editorial-body {
+    font-family: var(--font-body);
+    @apply text-lg leading-relaxed;
+  }
+}
+
+/* ============ Map styling (Il Bel Paese) ============ */
+.ibp-map {
+  background: hsl(var(--card));
+}
+.ibp-map .leaflet-tile-pane {
+  /* Subtly desaturate the basemap so colored markers pop */
+  filter: saturate(0.78) contrast(0.96);
+}
+.ibp-map .leaflet-control-zoom a {
+  background: hsl(var(--card));
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem !important;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.ibp-map .leaflet-control-zoom a:hover {
+  background: hsl(var(--muted));
+  color: hsl(var(--primary));
+}
+.ibp-map .leaflet-control-attribution {
+  background: hsl(var(--card) / 0.85);
+  color: hsl(var(--muted-foreground));
+  font-family: var(--font-body);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Markers */
+.ibp-marker-wrap { background: transparent !important; border: none !important; }
+.ibp-marker {
+  position: relative;
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+.ibp-marker__core {
+  position: absolute;
+  inset: 8px;
+  border-radius: 9999px;
+  background: var(--mc);
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+.ibp-marker--solid .ibp-marker__halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--mc);
+  opacity: 0.28;
+  animation: ibp-pulse 2.4s ease-out infinite;
+}
+.ibp-marker--ghost .ibp-marker__core {
+  background: hsl(var(--background));
+  border: 2px solid var(--mc);
+}
+.ibp-marker--ghost .ibp-marker__ring {
+  position: absolute;
+  inset: 2px;
+  border-radius: 9999px;
+  border: 1.5px dashed var(--mc);
+  opacity: 0.7;
+}
+.ibp-marker:hover .ibp-marker__core {
+  transform: scale(1.18);
+  transition: transform 0.18s ease;
+}
+
+@keyframes ibp-pulse {
+  0%   { transform: scale(0.7); opacity: 0.45; }
+  70%  { transform: scale(1.6); opacity: 0;    }
+  100% { transform: scale(1.6); opacity: 0;    }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ibp-marker--solid .ibp-marker__halo { animation: none; opacity: 0.35; }
+}
+
+/* Popup */
+.ibp-map .leaflet-popup-content-wrapper {
+  background: hsl(var(--popover));
+  color: hsl(var(--popover-foreground));
+  border-radius: 0.625rem;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.25);
+  border: 1px solid hsl(var(--border));
+}
+.ibp-map .leaflet-popup-content {
+  margin: 12px 14px;
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+.ibp-map .leaflet-popup-tip {
+  background: hsl(var(--popover));
+  border: 1px solid hsl(var(--border));
+}
+
+/* Cluster bubbles — coerenti con la palette del progetto */
+.ibp-cluster-wrap { background: transparent !important; border: none !important; }
+.ibp-cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: hsl(var(--primary) / 0.18);
+  border: 2px solid hsl(var(--primary));
+  color: hsl(var(--primary));
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 4px 12px -4px hsl(var(--primary) / 0.45);
+  backdrop-filter: blur(2px);
+  transition: transform 0.18s ease;
+}
+.ibp-cluster:hover { transform: scale(1.08); }
+.leaflet-marker-icon.ibp-cluster-wrap { z-index: 600 !important; }
+/* Override default leaflet.markercluster look */
+.marker-cluster-small, .marker-cluster-medium, .marker-cluster-large,
+.marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+  background: transparent !important;
+}
+
+/* "You are here" marker */
+.ibp-user-loc-wrap { background: transparent !important; border: none !important; }
+.ibp-user-loc { position: relative; display: block; width: 20px; height: 20px; }
+.ibp-user-loc__dot {
+  position: absolute; inset: 5px; border-radius: 999px;
+  background: hsl(var(--secondary)); border: 2px solid hsl(var(--background));
+  box-shadow: 0 1px 4px hsl(var(--secondary) / 0.6);
+}
+.ibp-user-loc__pulse {
+  position: absolute; inset: 0; border-radius: 999px;
+  background: hsl(var(--secondary) / 0.4);
+  animation: ibp-pulse 1.8s ease-out infinite;
+}
